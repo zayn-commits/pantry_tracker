@@ -21,8 +21,43 @@ export default function Home() {
       })
     })
     setPantry(inventoryList)
-    console.log(inventoryList)
   }
+
+  const removeItem = async(item)=>{
+    const docRef =  doc(collection(firestore, 'inventory'), item)
+    const docSnap = await getDoc(docRef)
+
+    if(docSnap.exists()){
+      const {quantity} = docSnap.data()
+      if (quantity === 1){
+        await deleteDoc(docRef)
+      }
+      else{
+        await setDoc(docRef, {quantity: quantity - 1})
+      }
+    }
+
+    await updateInventory()
+  }
+
+  const addItem = async(item)=>{
+    const docRef =  doc(collection(firestore, 'inventory'), item)
+    const docSnap = await getDoc(docRef)
+
+    if(docSnap.exists()){
+      const {quantity} = docSnap.data()
+      await setDoc(docRef, {quantity: quantity + 1})
+      }
+    else{
+      await setDoc(docRef, {quantity: 1})
+    }
+
+      await updateInventory()
+    }
+  }
+
+
+
 
   useEffect(()=>{
     updateInventory()
@@ -33,10 +68,12 @@ export default function Home() {
       <Typography variant="h1">Pantry Tracker</Typography>
       {
         pantry.forEach((item)=>{
-          return(<>
+          console.log(item)
+          return(
+          <Box>
           {item.name}
           {item.count}
-          </>)
+          </Box>)
         })
       }
     </Box>

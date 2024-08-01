@@ -6,12 +6,12 @@ import { Box, Stack, Typography, Modal, TextField, Button} from '@mui/material'
 import { collection, getDocs, query, getDoc, deleteDoc, doc, setDoc,} from 'firebase/firestore'
 
 export default function Home() {
-  const [pantry, setPantry] = useState([])
+  const [inventory, setInventory] = useState([])
   const [open, setOpen] = useState(false)
   const [itemName, setItemName] = useState('')
 
   const updateInventory = async () => {
-    const snapshot = query(collection(firestore, 'pantry'))
+    const snapshot = query(collection(firestore, 'inventory'))
     const docs = await getDocs(snapshot)
     const inventoryList = []
     docs.forEach((doc)=>{
@@ -20,7 +20,7 @@ export default function Home() {
         ...doc.data(),
       })
     })
-    setPantry(inventoryList)
+    setInventory(inventoryList)
   }
 
   const removeItem = async(item)=>{
@@ -100,11 +100,10 @@ export default function Home() {
             variant="outlined"
             fullWidth
             value={itemName}
-            onChange={(e)=>{
-              setItemName(e.target.value)
-            }}
+            onChange={(e)=>setItemName(e.target.value)}
             />
-            <Button variant="outlined" 
+            <Button 
+            variant="outlined" 
             onClick={()=>{
               addItem(itemName)
               setItemName('')
@@ -116,14 +115,14 @@ export default function Home() {
           </Stack>
         </Box>
       </Modal>
-      <Button variant = "contained" 
-      onClick={() =>{
-        handleOpen()
-      }}>
+      <Button 
+      variant = "contained" 
+      onClick={handleOpen}
+      >
         Add New Item
       </Button>
       <Box
-      border="1px solid #333">
+      border='1px solid #333'>
         <Box
         width="800px"
         height="100px"
@@ -135,10 +134,12 @@ export default function Home() {
           <Typography
           variant = "h2"
           color = "#333"
-          >Pantry Items</Typography>
+          textAlign="center"
+          >Pantry Items
+          </Typography>
         </Box>
       <Stack width = "800px" height = "300px" spacing={2} overflow="auto">
-        {pantry.map(({name, quantity})=>(
+        {inventory.map(({name, quantity})=>(
             <Box 
             key={name} 
             width = "100%"
@@ -160,12 +161,14 @@ export default function Home() {
               variant = "h2" 
               color = "#333"
               textAlign="center">
-              {quantity}
+              quantity: {quantity}
               </Typography>
 
-              <Button variant = "contained" onClick = {()=>{
-                removeItem(item)
-              }}>
+              <Button 
+              variant = "contained" 
+              onClick = {()=>
+                removeItem(name)
+              }>
                 Remove
               </Button>
               

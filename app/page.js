@@ -10,6 +10,7 @@ export default function Home() {
   const [open, setOpen] = useState(false)
   const [itemName, setItemName] = useState('')
 
+
   const updateInventory = async () => {
     const snapshot = query(collection(firestore, 'inventory'))
     const docs = await getDocs(snapshot)
@@ -73,6 +74,8 @@ export default function Home() {
     flexDirection="column"
     justifyContent="center" 
     alignItems="center"
+    bgcolor="white"
+
     gap={2}
     >
       <Modal
@@ -109,6 +112,25 @@ export default function Home() {
               setItemName('')
               handleClose()
             }}
+            sx={{
+              backgroundColor: 'white',
+              '&:hover': {
+                backgroundColor: '#00ede1',
+              },
+              '&:active': {
+                backgroundColor: 'red',
+              },
+              padding: '10px 20px',
+              fontSize: '16px',
+              borderRadius: '5px',
+              transition: 'background-color 0.3s ease, transform 0.3s ease',
+              '&:hover': {
+                transform: 'scale(1.05)',
+              },
+              '&:active': {
+                transform: 'scale(0.95)',
+              },
+            }}
             >
               Add
             </Button>
@@ -118,8 +140,28 @@ export default function Home() {
       <Button 
       variant = "contained" 
       onClick={handleOpen}
+      sx={{
+        backgroundColor: '#007BFF',
+        '&:hover': {
+          backgroundColor: '#0056b3',
+        },
+        '&:active': {
+          backgroundColor: '#004085',
+        },
+        padding: '10px 20px',
+        fontSize: '16px',
+        borderRadius: '5px',
+        transition: 'background-color 0.3s ease, transform 0.3s ease',
+        '&:hover': {
+          transform: 'scale(1.05)',
+        },
+        '&:active': {
+          transform: 'scale(0.95)',
+        },
+      }}
       >
         Add New Item
+
       </Button>
       <Box
       border='1px solid #333'>
@@ -132,7 +174,7 @@ export default function Home() {
         display="flex"
         >
           <Typography
-          variant = "h2"
+          variant = "h3"
           color = "#333"
           textAlign="center"
           >Pantry Items
@@ -168,7 +210,26 @@ export default function Home() {
               variant = "contained" 
               onClick = {()=>
                 removeItem(name)
-              }>
+              }
+              sx={{
+                backgroundColor: '#007BFF',
+                '&:hover': {
+                  backgroundColor: '#0056b3',
+                },
+                '&:active': {
+                  backgroundColor: '#004085',
+                },
+                padding: '10px 20px',
+                fontSize: '16px',
+                borderRadius: '5px',
+                transition: 'background-color 0.3s ease, transform 0.3s ease',
+                '&:hover': {
+                  transform: 'scale(1.05)',
+                },
+                '&:active': {
+                  transform: 'scale(0.95)',
+                },
+              }}>
                 Remove
               </Button>
               
